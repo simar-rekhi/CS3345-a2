@@ -36,7 +36,7 @@ public class AVL<T extends Comparable<T>> {
     // Note: all priv helper functions are listed from here onwards:
 
     // AVL tree insertion method (maintains height balance after insertion & deletion)
-    private AVLnode<T> insert(T data, AVLnode<T> node){
+    public AVLnode<T> insert(T data, AVLnode<T> node){
         if (node == null){
             return new AVLnode<T>(data, null, null);
         }
@@ -52,6 +52,22 @@ public class AVL<T extends Comparable<T>> {
         }
         // rebalance and update heights
         return balance(node);
+    }
+
+    // AVL Tree lookup for a specific node
+    public AVLnode<T> lookup(T data, AVLnode<T> node){
+        if (node == null){
+            return null;
+        }
+
+        int compareResult = data.compareTo(node.data);
+        if (compareResult < 0){
+            return lookup(data, node.left);
+        } else if (compareResult > 0){
+            return lookup(data, node.right);
+        } else {
+            return node; // Found, so we are returning the node
+        }
     }
 
     // helper function to find minimum in subtree
