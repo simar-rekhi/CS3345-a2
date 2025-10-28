@@ -3,12 +3,12 @@
 public class Splay<T extends Comparable<T>> {
 
     // Splay tree node class
-    private static class SplayNode<T>{
-        SplayNode(T data){
+    public static class SplayNode<T> {
+        SplayNode(T data) {
             this(data, null, null);
         }
 
-        SplayNode(T data, SplayNode<T> left, SplayNode<T> right){
+        public SplayNode(T data, SplayNode<T> left, SplayNode<T> right) {
             this.data = data;
             this.left = left;
             this.right = right;
@@ -21,21 +21,22 @@ public class Splay<T extends Comparable<T>> {
     }
 
     private SplayNode<T> root;
-    
-    public Splay(){
+
+    public Splay() {
         root = null;
     }
-    
-    // Splay Tree insertion method - simply inserts, splaying is done as a separate operation, to modularize the code
-    private SplayNode<T> insert(T data, SplayNode<T> node){
-        if (node == null){
+
+    // Splay Tree insertion method - simply inserts, splaying is done as a separate
+    // operation, to modularize the code
+    private SplayNode<T> insert(T data, SplayNode<T> node) {
+        if (node == null) {
             return new SplayNode<T>(data, null, null);
         }
 
         int compareResult = data.compareTo(node.data);
-        if (compareResult < 0){
+        if (compareResult < 0) {
             node.left = insert(data, node.left);
-        } else if (compareResult > 0){
+        } else if (compareResult > 0) {
             node.right = insert(data, node.right);
         } else {
             // Duplicate; do nothing
@@ -45,44 +46,44 @@ public class Splay<T extends Comparable<T>> {
     }
 
     // Splay operation to bring the node with the given key to the root
-    private SplayNode<T> splay(T key, SplayNode<T> node){   
-        if (node == null){
+    private SplayNode<T> splay(T key, SplayNode<T> node) {
+        if (node == null) {
             return null;
         }
 
         int compareResult = key.compareTo(node.data);
-        if (compareResult < 0){
+        if (compareResult < 0) {
             // Key lies in left subtree
-            if (node.left == null){
+            if (node.left == null) {
                 return node; // Key not found
             }
             int leftCompare = key.compareTo(node.left.data);
-            if (leftCompare < 0){
+            if (leftCompare < 0) {
                 // Zig-Zig (Left Left)
                 node.left.left = splay(key, node.left.left);
                 node = rotateRight(node);
-            } else if (leftCompare > 0){
+            } else if (leftCompare > 0) {
                 // Zig-Zag (Left Right)
                 node.left.right = splay(key, node.left.right);
-                if (node.left.right != null){
+                if (node.left.right != null) {
                     node.left = rotateLeft(node.left);
                 }
             }
             return (node.left == null) ? node : rotateRight(node);
-        } else if (compareResult > 0){
+        } else if (compareResult > 0) {
             // Key lies in right subtree
-            if (node.right == null){
+            if (node.right == null) {
                 return node; // Key not found
             }
             int rightCompare = key.compareTo(node.right.data);
-            if (rightCompare > 0){
+            if (rightCompare > 0) {
                 // Zag-Zag (Right Right)
                 node.right.right = splay(key, node.right.right);
                 node = rotateLeft(node);
-            } else if (rightCompare < 0){
+            } else if (rightCompare < 0) {
                 // Zag-Zig (Right Left)
                 node.right.left = splay(key, node.right.left);
-                if (node.right.left != null){
+                if (node.right.left != null) {
                     node.right = rotateRight(node.right);
                 }
             }
@@ -93,7 +94,7 @@ public class Splay<T extends Comparable<T>> {
     }
 
     // single right rotation
-    private SplayNode<T> rotateRight(SplayNode<T> y){
+    private SplayNode<T> rotateRight(SplayNode<T> y) {
         SplayNode<T> x = y.left;
         y.left = x.right;
         x.right = y;
@@ -101,7 +102,7 @@ public class Splay<T extends Comparable<T>> {
     }
 
     // single left rotation
-    private SplayNode<T> rotateLeft(SplayNode<T> x){
+    private SplayNode<T> rotateLeft(SplayNode<T> x) {
         SplayNode<T> y = x.right;
         x.right = y.left;
         y.left = x;
@@ -121,9 +122,20 @@ public class Splay<T extends Comparable<T>> {
                 SplayNode<T> node = stack.pop();
                 System.out.println(node.data);
                 // push right first so left is processed next (pre-order)
-                if (node.right != null) stack.push(node.right);
-                if (node.left != null) stack.push(node.left);
+                if (node.right != null)
+                    stack.push(node.right);
+                if (node.left != null)
+                    stack.push(node.left);
             }
         }
+    }
+
+    public void insert(T data) {
+        root = insert(data, root);
+    }
+
+    public boolean lookup(T data) {
+        root = splay(data, root);
+        return root != null && root.data.equals(data);
     }
 }

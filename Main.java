@@ -133,35 +133,26 @@ public class Main {
 
     // Splay Testing
     private static void testSplay(List<Integer> insertKeys, List<Integer> searchKeys) {
-        Splay<Integer> splay = new Splay<>();
-
-        long[] insertStats = measure(() -> {
-            for (Integer key : insertKeys) {
-                try {
-                    var insertMethod = Splay.class.getDeclaredMethod("insert", Object.class,
-                            Class.forName("Splay$SplayNode"));
-                    insertMethod.setAccessible(true);
-                    insertMethod.invoke(splay, key, null);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+        try {
+            Splay<Integer> splay = new Splay<>();
+    
+            long[] insertStats = measure(() -> {
+                for (Integer key : insertKeys) {
+                    splay.insert(key);
                 }
-            }
-        });
-        System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
-
-        long[] searchStats = measure(() -> {
-            try {
-                var splayMethod = Splay.class.getDeclaredMethod("splay", Object.class,
-                        Class.forName("Splay$SplayNode"));
-                splayMethod.setAccessible(true);
+            });
+            System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+    
+            long[] searchStats = measure(() -> {
                 for (Integer key : searchKeys) {
-                    splayMethod.invoke(splay, key, null);
+                    splay.lookup(key);
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+            });
+            System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+    
+        } catch (Exception e) {
+            System.out.println("Splay Error: " + e);
+        }
     }
 
     // testing Hash - Chaining
