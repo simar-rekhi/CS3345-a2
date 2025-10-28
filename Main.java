@@ -9,8 +9,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Data Structure Performance Comparing Log");
 
-        
-        String basePath = "C:/DevTools/Projects/CS3345-a2/"; 
+        String basePath = "C:/DevTools/Projects/CS3345-a2/";
 
         String[] insertFiles = {
                 basePath + "iter1_insert_keys.txt",
@@ -76,7 +75,7 @@ public class Main {
     private static void warmUpJVM() {
         AVL<Integer> temp = new AVL<>();
         for (int i = 0; i < 1000; i++)
-            temp.insert(i); 
+            temp.insert(i);
         System.out.println("warmup complete, you may proceed");
     }
 
@@ -123,13 +122,13 @@ public class Main {
             for (Integer key : insertKeys)
                 avl.insert(key);
         });
-        System.out.printf("Insert → Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+        System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
                 avl.lookup(key);
         });
-        System.out.printf("Search → Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+        System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
     }
 
     // Splay Testing
@@ -148,7 +147,7 @@ public class Main {
                 }
             }
         });
-        System.out.printf("Insert → Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+        System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
         long[] searchStats = measure(() -> {
             try {
@@ -162,7 +161,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
         });
-        System.out.printf("Search → Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+        System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
     }
 
     // testing Hash - Chaining
@@ -173,13 +172,13 @@ public class Main {
             for (Integer key : insertKeys)
                 ht.insertChain(key);
         });
-        System.out.printf("Insert → Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+        System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
                 ht.lookupChain(key);
         });
-        System.out.printf("Search → Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+        System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
     }
 
     // testing Hashing - quadratic probing
@@ -190,12 +189,12 @@ public class Main {
             for (Integer key : insertKeys)
                 ht.insertQuadratic(key);
         });
-        System.out.printf("Insert → Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+        System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
                 ht.lookupQuadratic(key);
         });
-        System.out.printf("Search → Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
+        System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
     }
 }
