@@ -26,7 +26,7 @@ public class Main {
         // this warms up JVM
         warmUpJVM();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             System.out.println("\nDataset: " + (i + 1) + " (" + N[i] + " elements)");
             List<Integer> insertKeys, searchKeys;
             try {
@@ -122,6 +122,7 @@ public class Main {
             for (Integer key : insertKeys)
                 avl.insert(key);
         });
+
         System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
         long[] searchStats = measure(() -> {
@@ -142,6 +143,7 @@ public class Main {
                 }
             });
             System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+
     
             long[] searchStats = measure(() -> {
                 for (Integer key : searchKeys) {
@@ -165,6 +167,7 @@ public class Main {
         });
         System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
+
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
                 ht.lookupChain(key);
@@ -181,6 +184,7 @@ public class Main {
                 ht.insertQuadratic(key);
         });
         System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
+
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)

@@ -11,7 +11,7 @@ public class AVL<T extends Comparable<T>> {
             this.data = data;
             this.left = left;
             this.right = right;
-            this.height = 0;
+            this.height = 1;  // A single node has height 1
         }
 
         // attributes of the AVL tree node class
@@ -27,22 +27,27 @@ public class AVL<T extends Comparable<T>> {
         root = null;
     }
 
-    // method to get the height of the tree
-    // primary API: get height from an int value (null-height encoded as -1)
-    public int getAVLKeyHeight(int nodeHeight) {
-        return nodeHeight;
+    // method to get the height from an int value (null height encoded as -1)
+    // method to get the height of the node identified by key
+    // Traverses from root and returns the height if key is found, otherwise -1
+    public int getAVLKeyHeight(T key) {
+        AVLnode<T> curr = root;
+        while (curr != null) {
+            int cmp = key.compareTo(curr.data);
+            if (cmp == 0) return curr.height;
+            curr = (cmp < 0) ? curr.left : curr.right;
+        }
+        return -1;
     }
 
-    // compatibility overload: accept a node and forward to the int-based API
-    @Deprecated
-    public int getAVLKeyHeight(AVLnode<T> node) {
-        return (node == null) ? -1 : getAVLKeyHeight(node.height);
+    // helper to safely get a node's height as int
+    private int nodeHeight(AVLnode<T> node) {
+        return (node == null) ? -1 : node.height;
     }
 
-    // Note: all priv helper functions are listed from here onwards:
+    // Note: all private helper functions are listed from here onwards:
 
-    // AVL tree insertion method (maintains height balance after insertion &
-    // deletion)
+    // AVL tree insertion method (maintains height balance after insertion & deletion)
     public AVLnode<T> insert(T data, AVLnode<T> node) {
         if (node == null) {
             return new AVLnode<T>(data, null, null);
@@ -57,6 +62,7 @@ public class AVL<T extends Comparable<T>> {
             // Duplicate; do nothing
             return balance(node);
         }
+
         // rebalance and update heights
         return balance(node);
     }
@@ -90,28 +96,27 @@ public class AVL<T extends Comparable<T>> {
 
     private static final int BALANCE_FACTOR = 1;
 
-    // helper function deployed right after insertion or deletion to balance the
-    // tree and maintain AVL tree conditions
+    // helper function deployed right after insertion or deletion to balance the tree
     private AVLnode<T> balance(AVLnode<T> node) {
         if (node == null) {
             return node;
         }
 
-        if (getAVLKeyHeight(node.left) - getAVLKeyHeight(node.right) > BALANCE_FACTOR) {
-            if (getAVLKeyHeight(node.left.left) >= getAVLKeyHeight(node.left.right)) {
+        if (nodeHeight(node.left) - nodeHeight(node.right) > BALANCE_FACTOR) {
+            if (nodeHeight(node.left.left) >= nodeHeight(node.left.right)) {
                 node = rotateWithLeftChild(node);
             } else {
                 node = doubleWithLeftChild(node);
             }
-        } else if (getAVLKeyHeight(node.right) - getAVLKeyHeight(node.left) > BALANCE_FACTOR) {
-            if (getAVLKeyHeight(node.right.right) >= getAVLKeyHeight(node.right.left)) {
+        } else if (nodeHeight(node.right) - nodeHeight(node.left) > BALANCE_FACTOR) {
+            if (nodeHeight(node.right.right) >= nodeHeight(node.right.left)) {
                 node = rotateWithRightChild(node);
             } else {
                 node = doubleWithRightChild(node);
             }
         }
 
-        node.height = Math.max(getAVLKeyHeight(node.left), getAVLKeyHeight(node.right)) + 1;
+        node.height = Math.max(nodeHeight(node.left), nodeHeight(node.right)) + 1;
         return node;
     }
 
@@ -120,8 +125,8 @@ public class AVL<T extends Comparable<T>> {
         AVLnode<T> k1 = k2.left;
         k2.left = k1.right;
         k1.right = k2;
-        k2.height = Math.max(getAVLKeyHeight(k2.left), getAVLKeyHeight(k2.right)) + 1;
-        k1.height = Math.max(getAVLKeyHeight(k1.left), k2.height) + 1;
+        k2.height = Math.max(nodeHeight(k2.left), nodeHeight(k2.right)) + 1;
+        k1.height = Math.max(nodeHeight(k1.left), k2.height) + 1;
         return k1;
     }
 
@@ -131,13 +136,13 @@ public class AVL<T extends Comparable<T>> {
         return rotateWithLeftChild(k3);
     }
 
-    // similarly, rotate node with right child
+    // rotate node with right child
     private AVLnode<T> rotateWithRightChild(AVLnode<T> k1) {
         AVLnode<T> k2 = k1.right;
         k1.right = k2.left;
         k2.left = k1;
-        k1.height = Math.max(getAVLKeyHeight(k1.left), getAVLKeyHeight(k1.right)) + 1;
-        k2.height = Math.max(getAVLKeyHeight(k2.right), k1.height) + 1;
+        k1.height = Math.max(nodeHeight(k1.left), nodeHeight(k1.right)) + 1;
+        k2.height = Math.max(nodeHeight(k2.right), k1.height) + 1;
         return k2;
     }
 
@@ -175,4 +180,9 @@ public class AVL<T extends Comparable<T>> {
         return lookup(data, root) != null;
     }
 
+    public static void main(String[] args) {
+        AVL<Integer> tree = new AVL<>();
+        tree.insert(551);
+        System.out.println("Height of 551: " + tree.getAVLKeyHeight(551));
+    }
 }
