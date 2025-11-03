@@ -54,8 +54,9 @@ public class Splay<T extends Comparable<T>> {
 
         // Key should be in left subtree
         if (key.compareTo(node.data) < 0) {
-            if (node.left == null) return node;
-            
+            if (node.left == null)
+                return node;
+
             if (key.compareTo(node.left.data) < 0) {
                 // Zig-Zig case
                 node.left.left = splay(key, node.left.left);
@@ -67,13 +68,15 @@ public class Splay<T extends Comparable<T>> {
                     node.left = rotateLeft(node.left);
                 }
             }
-            
-            if (node.left == null) return node;
+
+            if (node.left == null)
+                return node;
             return rotateRight(node);
         } else {
             // Key should be in right subtree
-            if (node.right == null) return node;
-            
+            if (node.right == null)
+                return node;
+
             if (key.compareTo(node.right.data) > 0) {
                 // Zag-Zag case
                 node.right.right = splay(key, node.right.right);
@@ -85,8 +88,9 @@ public class Splay<T extends Comparable<T>> {
                     node.right = rotateRight(node.right);
                 }
             }
-            
-            if (node.right == null) return node;
+
+            if (node.right == null)
+                return node;
             return rotateLeft(node);
         }
     }
@@ -118,7 +122,8 @@ public class Splay<T extends Comparable<T>> {
 
     // pre-order recursive helper
     private void dfs(SplayNode<T> node, java.util.List<T> out) {
-        if (node == null) return;
+        if (node == null)
+            return;
         out.add(node.data);
         dfs(node.left, out);
         dfs(node.right, out);
@@ -135,17 +140,10 @@ public class Splay<T extends Comparable<T>> {
     }
 
     public boolean lookup(T data) {
-        if (root == null) return false;
+        if (root == null)
+            return false;
         root = splay(data, root);
         return root != null && root.data.equals(data);
     }
 
-    // Test method
-    public static void main(String[] args) {
-        Splay<Integer> tree = new Splay<>();
-        // Insert some numbers and check root after each operation
-        tree.insert(9357);
-        System.out.println("After inserting 9357, root=" + tree.root.data);
-        System.out.println("DFS traversal: " + tree.DFSSplayTree());
-    }
 }

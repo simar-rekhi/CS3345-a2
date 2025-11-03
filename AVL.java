@@ -11,7 +11,7 @@ public class AVL<T extends Comparable<T>> {
             this.data = data;
             this.left = left;
             this.right = right;
-            this.height = 1;  // A single node has height 1
+            this.height = 1; // A single node has height 1
         }
 
         // attributes of the AVL tree node class
@@ -34,7 +34,8 @@ public class AVL<T extends Comparable<T>> {
         AVLnode<T> curr = root;
         while (curr != null) {
             int cmp = key.compareTo(curr.data);
-            if (cmp == 0) return curr.height;
+            if (cmp == 0)
+                return curr.height;
             curr = (cmp < 0) ? curr.left : curr.right;
         }
         return -1;
@@ -47,7 +48,8 @@ public class AVL<T extends Comparable<T>> {
 
     // Note: all private helper functions are listed from here onwards:
 
-    // AVL tree insertion method (maintains height balance after insertion & deletion)
+    // AVL tree insertion method (maintains height balance after insertion &
+    // deletion)
     public AVLnode<T> insert(T data, AVLnode<T> node) {
         if (node == null) {
             return new AVLnode<T>(data, null, null);
@@ -96,7 +98,8 @@ public class AVL<T extends Comparable<T>> {
 
     private static final int BALANCE_FACTOR = 1;
 
-    // helper function deployed right after insertion or deletion to balance the tree
+    // helper function deployed right after insertion or deletion to balance the
+    // tree
     private AVLnode<T> balance(AVLnode<T> node) {
         if (node == null) {
             return node;
@@ -180,9 +183,4 @@ public class AVL<T extends Comparable<T>> {
         return lookup(data, root) != null;
     }
 
-    public static void main(String[] args) {
-        AVL<Integer> tree = new AVL<>();
-        tree.insert(551);
-        System.out.println("Height of 551: " + tree.getAVLKeyHeight(551));
-    }
 }
