@@ -26,7 +26,7 @@ public class Main {
         // this warms up JVM
         warmUpJVM();
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
             System.out.println("\nDataset: " + (i + 1) + " (" + N[i] + " elements)");
             List<Integer> insertKeys, searchKeys;
             try {
@@ -136,7 +136,7 @@ public class Main {
     private static void testSplay(List<Integer> insertKeys, List<Integer> searchKeys) {
         try {
             Splay<Integer> splay = new Splay<>();
-    
+
             long[] insertStats = measure(() -> {
                 for (Integer key : insertKeys) {
                     splay.insert(key);
@@ -144,14 +144,13 @@ public class Main {
             });
             System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
 
-    
             long[] searchStats = measure(() -> {
                 for (Integer key : searchKeys) {
                     splay.lookup(key);
                 }
             });
             System.out.printf("Search: Time: %d ms | Memory: %d bytes%n", searchStats[0], searchStats[1]);
-    
+
         } catch (Exception e) {
             System.out.println("Splay Error: " + e);
         }
@@ -166,7 +165,6 @@ public class Main {
                 ht.insertChain(key);
         });
         System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
-
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
@@ -184,7 +182,6 @@ public class Main {
                 ht.insertQuadratic(key);
         });
         System.out.printf("Insert: Time: %d ms | Memory: %d bytes%n", insertStats[0], insertStats[1]);
-
 
         long[] searchStats = measure(() -> {
             for (Integer key : searchKeys)
