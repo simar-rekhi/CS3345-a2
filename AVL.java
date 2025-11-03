@@ -28,8 +28,15 @@ public class AVL<T extends Comparable<T>> {
     }
 
     // method to get the height of the tree
+    // primary API: get height from an int value (null-height encoded as -1)
+    public int getAVLKeyHeight(int nodeHeight) {
+        return nodeHeight;
+    }
+
+    // compatibility overload: accept a node and forward to the int-based API
+    @Deprecated
     public int getAVLKeyHeight(AVLnode<T> node) {
-        return (node == null) ? -1 : node.height;
+        return (node == null) ? -1 : getAVLKeyHeight(node.height);
     }
 
     // Note: all priv helper functions are listed from here onwards:
